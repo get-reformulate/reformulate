@@ -2,8 +2,7 @@ import React, { PropTypes, Component } from 'react'
 import { injectIntl } from 'react-intl'
 import IntlError from 'intl-error'
 
-@injectIntl
-export default class Form extends Component {
+export class Form extends Component {
 
   static propTypes = {
     intl: PropTypes.object,
@@ -239,3 +238,5 @@ export default class Form extends Component {
   }
 
 }
+
+export default injectIntl( Form )
