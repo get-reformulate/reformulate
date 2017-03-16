@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from 'react'
-import classnames from 'classnames'
-// import shallowEqual from 'fbjs/lib/shallowEqual'
 
 export default class Form extends Component {
 
   static propTypes = {
     initialValues: PropTypes.object,
     // enforceInitialValues: PropTypes.bool.isRequired,
+    className: PropTypes.string,
+    children: PropTypes.any,
     loading: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func,
     onChange: PropTypes.func,
@@ -34,10 +34,13 @@ export default class Form extends Component {
 
   componentDidMount () {
     this.mounted = true
+  }
+
+  componentWillMount () {
     this._handleInitialValues()
   }
 
-  componentDidUpdate () {
+  componentWillUpdate () {
     this._handleInitialValues()
   }
 
@@ -46,10 +49,8 @@ export default class Form extends Component {
   }
 
   _handleInitialValues () {
-    // if ( shallowEqual( this.props.initialValues, this.state.initialValues ) ) {
-      // Do not trigger stat changes since this is loaded before the render
-      this.state.initialValues = this.props.initialValues
-    // }
+    // we do not want to use setState here
+    this.state.initialValues = this.props.initialValues
   }
 
   getChildContext () {
@@ -136,7 +137,7 @@ export default class Form extends Component {
       <form
         children={children}
         onSubmit={this.onSubmit}
-        className={classnames( style.locals.Form, className )}
+        className={className}
       />
     )
   }
@@ -144,7 +145,7 @@ export default class Form extends Component {
   // Returns number of errors on state
   validate = ( fields, values ) => {
     const errors = {}
-    const { components, getValues } = this
+    const { components } = this
 
     if ( ! fields ) {
       fields = Object.keys( components )
@@ -199,15 +200,15 @@ export default class Form extends Component {
     }
 
     const { onSubmit } = this.props
-    const { values, previousValues } = this.state
+    const { values } = this.state
 
-    this.setState({
+    await this.setState({
       previousValues: { ...values },
       submitting: true
     })
 
     if ( onSubmit ) {
-      await onSubmit( values, previousValues )
+      await onSubmit( this.state )
     }
 
     // Handle not submitting

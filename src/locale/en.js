@@ -1,0 +1,15 @@
+export default {
+  "reform.validate_email_invalid": "This field should have a valid email address.",
+  "reform.validate_phone_invalid": "This field should have a valid international telephone number represented without spaces.",
+  "reform.validate_website_invalid": "This field should have a valid website url.",
+  "reform.validate_number_invalid": "This field should have a valid number.",
+  "reform.validate_date_invalid": "Invalid date",
+  "reform.validate_max_date": "This field should have a date before {date}",
+  "reform.validate_min_date": "This field should have a date after {date}",
+  "reform.validate_max_length": "This field should have {chars} or less characters",
+  "reform.validate_min_length": "This field should have at least {chars} characters",
+  "reform.validate_not_empty": "This field should not be empty",
+  "reform.validate_selected_ensure": "This field should have options selected",
+  "reform.validate_selected_min": "This field should have at least {min} options selected",
+  "reform.validate_selected_max": "This field should have a maximum of {max} options selected",
+}
