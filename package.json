@@ -4,6 +4,8 @@
   "description": "react forms engine",
   "main": "build/index.js",
   "scripts": {
+    "preversion": "git push origin master",
+    "postversion": "git push origin --tags",
     "build": "rm -fR build/ && babel src/ -d build/ --compact --minified",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
