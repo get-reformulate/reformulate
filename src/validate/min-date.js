@@ -1,4 +1,3 @@
-import { µYEAR } from 'findhit/timestamps'
 import IntlError from 'intl-error'
 
 export default function ( minDate ) {
