@@ -1,4 +1,4 @@
-# reformulate
+# Reformulate
 react forms engine to help you out building forms with react
 
 ## Installation
