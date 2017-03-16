@@ -97,6 +97,10 @@ export default class FieldComponent extends Component {
     return this.context.form.getError( this.props.name )
   }
 
+  getFormattedError = ( intl ) => {
+    return this.context.form.getFormattedError( intl, this.props.name )
+  }
+
   isBeingSubmitted = () => {
     return this.context.form.submitting
   }

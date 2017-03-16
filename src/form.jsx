@@ -55,7 +55,7 @@ export default class Form extends Component {
   }
 
   getChildContext () {
-    const { registerComponent, setValue, getValue, getValues, getError, hasErrors } = this
+    const { registerComponent, setValue, getValue, getValues, getError, getFormattedError, hasErrors } = this
     const { initialValues, loading } = this.props
     const { values, previousValues, errors, submitting } = this.state
 
