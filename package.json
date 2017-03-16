@@ -1,0 +1,40 @@
+{
+  "name": "reformulate",
+  "version": "1.0.0",
+  "description": "react forms engine",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "rm -fR build/ && babel src/ -d build/ --compact --minified",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/get-reformulate/reformulate.git"
+  },
+  "keywords": [
+    "reformulate",
+    "react",
+    "form",
+    "forms"
+  ],
+  "author": "José Moreira <josemoreiravarzim@gmail.com>",
+  "license": "EUPL-1.1",
+  "bugs": {
+    "url": "https://github.com/get-reformulate/reformulate/issues"
+  },
+  "homepage": "https://github.com/get-reformulate/reformulate#readme",
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "babel-preset-latest": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "eslint": "^3.17.1",
+    "eslint-plugin-react": "^6.10.0"
+  },
+  "dependencies": {
+    "intl-error": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": "^0.14.0"
+  }
+}
