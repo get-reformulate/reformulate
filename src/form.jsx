@@ -1,9 +1,12 @@
 import React, { PropTypes, Component } from 'react'
+import { injectIntl } from 'react-intl'
 import IntlError from 'intl-error'
 
+@injectIntl
 export default class Form extends Component {
 
   static propTypes = {
+    intl: PropTypes.object,
     initialValues: PropTypes.object,
     // enforceInitialValues: PropTypes.bool.isRequired,
     className: PropTypes.string,
@@ -174,21 +177,20 @@ export default class Form extends Component {
     return Object.keys( errors ).filter( field => !! errors[ field ] ).length
   }
 
-  getFormattedErrors = ( intl, errors = this.state.errors ) => {
+  getFormattedErrors = ( errors = this.state.errors ) => {
     const errs = []
 
     for ( let field in errors ) {
-      const error = this.getFormattedError( intl, field, errors )
+      const error = this.getFormattedError( field, errors )
       if ( error ) errs.push( error )
     }
 
     return errs
   }
 
-  getFormattedError = ( intl, field, errors = this.state.errors ) => {
+  getFormattedError = ( field, errors = this.state.errors ) => {
     const error = errors[field]
-
-    console.log( 'formatted', error, errors, field )
+    const { intl } = this.props
 
     return (
       error && error instanceof IntlError && error.formatMessage( intl ) ||

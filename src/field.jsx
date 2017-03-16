@@ -97,8 +97,8 @@ export default class FieldComponent extends Component {
     return this.context.form.getError( this.props.name )
   }
 
-  getFormattedError = ( intl ) => {
-    return this.context.form.getFormattedError( intl, this.props.name )
+  getFormattedError = () => {
+    return this.context.form.getFormattedError( this.props.name )
   }
 
   isBeingSubmitted = () => {
@@ -128,7 +128,7 @@ export default class FieldComponent extends Component {
   }
 
   // To be used to pass properties to input
-  onChange = async ({ target, type }) => {
+  onChange = async ({ target }) => {
     const { onChange } = this.props
 
     const value = target.type === 'checkbox' ? target.checked || false : target.value || ''
