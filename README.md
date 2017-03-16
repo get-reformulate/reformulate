@@ -1,12 +1,18 @@
 # reformulate
-react-intl/intl compatible error
-
-Handle better your forms, add reformulate to your webapp.
+react forms engine to help you out building forms with react
 
 ## Installation
 ```bash
-yarn add reformulate
+yarn add reformulate reformulate-your-ui
 ```
+
+## Developed UIs so far
+reformulate itself doesn't handle UI binding, it is only the Form/Fields engine.
+You must add a UI binding package to your project that matches the UI you're using.
+If you don't find it here, feel free to make yours and PR a link.
+
+* [Semantic UI](https://github.com/get-reformulate/reformulate-semantic-ui)
+
 
 ## Usage
 
