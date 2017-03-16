@@ -64,7 +64,7 @@ export default class Form extends Component {
         registerComponent,
         values, previousValues, initialValues,
         errors, getValues, getValue, setValue,
-        getError, hasErrors,
+        getError, hasErrors, getFormattedError,
         submitting, loading
       }
     }
