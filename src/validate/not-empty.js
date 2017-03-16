@@ -12,7 +12,7 @@ export default function ({ forceString } = DEFAULT_OPTIONS) {
         ! value.trim().replace(/ /g,'')
 
     ) {
-      throw new IntlError({ id: "reform.validate_not_empty" })
+      throw new IntlError({ id: "reformulate.validate_not_empty" })
     }
   }
 }

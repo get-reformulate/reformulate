@@ -6,7 +6,7 @@ export default function () {
   return function ( value ) {
     if ( ! value ) return
     if ( typeof value == 'string' && ! value.match( WEBSITE ) ) {
-      throw new IntlError({ id: "reform.validate_website_invalid" })
+      throw new IntlError({ id: "reformulate.validate_website_invalid" })
     }
   }
 }

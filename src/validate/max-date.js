@@ -19,11 +19,11 @@ export default function ( maxDate ) {
     )
 
     if ( isNaN( date ) ) {
-      throw new IntlError({ id: "reform.validate_date_invalid" })
+      throw new IntlError({ id: "reformulate.validate_date_invalid" })
     }
 
     if ( date > maxDate ) {
-      throw new IntlError({ id: "reform.validate_max_date" }, { date: maxDate.toString() } )
+      throw new IntlError({ id: "reformulate.validate_max_date" }, { date: maxDate.toString() } )
     }
   }
 }

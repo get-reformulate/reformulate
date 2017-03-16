@@ -19,11 +19,11 @@ export default function ( minDate ) {
     )
 
     if ( isNaN( date ) ) {
-      throw new IntlError({ id: "reform.validate_date_invalid" })
+      throw new IntlError({ id: "reformulate.validate_date_invalid" })
     }
 
     if ( date < minDate ) {
-      throw new IntlError({ id: "reform.validate_min_date" }, { date: minDate.toString() })
+      throw new IntlError({ id: "reformulate.validate_min_date" }, { date: minDate.toString() })
     }
   }
 }

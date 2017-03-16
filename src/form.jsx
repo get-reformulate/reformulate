@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react'
+import IntlError from 'intl-error'
 
 export default class Form extends Component {
 
@@ -69,40 +70,32 @@ export default class Form extends Component {
     }
   }
 
-  setValue = ( name, value, error ) => {
-    // const { enforceInitialValues } = this.props
+  setValue = async ( name, value, error ) => {
+    const { props: { onChange, submitOnChange }, state: { values, errors } } = this
 
-    this.setState(( oldState, { onChange, submitOnChange }) => {
-      const { values, errors } = oldState
-      const newState = {
-        ...oldState,
-        values: {
-          ...values,
-          [name]: value
-        },
-        errors: {
-          ...errors,
-          [name]: error
-        }
+    console.log( 'setting', name, value, error )
+
+    const newState = {
+      ...this.state,
+      values: {
+        ...values,
+        [name]: value
+      },
+      errors: {
+        ...errors,
+        [name]: error
       }
+    }
 
-      if ( onChange ) {
-        onChange( newState )
-      }
+    await this.setState(newState)
 
-      if ( submitOnChange ) {
-        setImmediate(() => {
-          this.onSubmit()
-        })
-      }
+    if ( onChange ) {
+      await onChange( newState )
+    }
 
-      // this was causing an input "flickering", by moving the cursor to the end everytime we needed to edit something
-      // if ( enforceInitialValues ) {
-      //   delete newState.values
-      // }
-
-      return newState
-    })
+    if ( submitOnChange ) {
+      this.onSubmit()
+    }
   }
 
   getValue = ( name ) => {
@@ -162,10 +155,10 @@ export default class Form extends Component {
     return errors
   }
 
-  ensureValidation = () => {
+  ensureValidation = async () => {
     const errors = this.validate()
 
-    this.setState({
+    await this.setState({
       ...this.state,
       errors
     })
@@ -178,13 +171,34 @@ export default class Form extends Component {
       errors = this.state.errors
     }
 
-    return Object.keys( errors )
-    .filter( field => !! errors[ field ] )
-    .length
+    return Object.keys( errors ).filter( field => !! errors[ field ] ).length
   }
 
-  getError = ( field ) => {
-    return this.state.errors[field]
+  getFormattedErrors = ( intl, errors = this.state.errors ) => {
+    const errs = []
+
+    for ( let field in errors ) {
+      const error = this.getFormattedError( intl, field, errors )
+      if ( error ) errs.push( error )
+    }
+
+    return errs
+  }
+
+  getFormattedError = ( intl, field, errors = this.state.errors ) => {
+    const error = errors[field]
+
+    console.log( 'formatted', error, errors, field )
+
+    return (
+      error && error instanceof IntlError && error.formatMessage( intl ) ||
+      error && error.message ||
+      error
+    )
+  }
+
+  getError = ( field, errors = this.state.errors ) => {
+    return errors[field]
   }
 
   onSubmit = async ( e ) => {
@@ -193,7 +207,7 @@ export default class Form extends Component {
       e.preventDefault()
     }
 
-    const errors = this.ensureValidation()
+    const errors = await this.ensureValidation()
 
     if ( this.hasErrors( errors ) ) {
       return
@@ -213,7 +227,7 @@ export default class Form extends Component {
 
     // Handle not submitting
     if ( this.mounted ) {
-      this.setState({ submitting: false })
+      await this.setState({ submitting: false })
     }
   }
 

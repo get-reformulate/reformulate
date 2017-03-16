@@ -37,13 +37,12 @@ export default class FieldComponent extends Component {
     return hasError
   }
 
-  setValue = ( newValue ) => {
+  setValue = async ( newValue ) => {
     const { name, initialValue } = this.props
-    const { setValue } = this.context.form
 
     const hasError = this.validate( newValue )
 
-    setValue(
+    await this.context.form.setValue(
       // query name
       name,
       // value
@@ -111,29 +110,26 @@ export default class FieldComponent extends Component {
     const { required } = this.props
     const error = this.getError()
 
+    console.log( 'render', this.getValue() )
+
     return (
       <input
         rel="field"
         {...{ name, required }}
         className={ error ? 'has-error' : ''}
-        onChange={this.onChange()}
+        onChange={this.onChange}
         value={this.getValue()}
       />
     )
   }
 
   // To be used to pass properties to input
-  onChange = ( e ) => {
+  onChange = async ({ target, type }) => {
     const { onChange } = this.props
 
+    const value = target.type === 'checkbox' ? target.checked || false : target.value || ''
 
-    const value = (
-      e && e.value ||
-      e && e.target && e.target.value ||
-      e
-    )
-
-    this.setValue( value )
+    await this.setValue( value )
 
     if ( onChange ) {
       onChange( value, this, this.context.form )

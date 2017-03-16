@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- 'node'
+
+cache: yarn
+install: yarn install
+script: yarn run build
+deploy:
+  provider: npm
+  email: josemoreiravarzim@gmail.com
+  api_key:
+    secure: AVqOL18gNbjlSx5SJtps2X6XEUCVOsjA/+aHyHw/Vu1EJMLjxkkxMINQiZJvf7acGQZrvFZkE8ekdf8tL3lZ5gRLHcv2jEs3jfHYXriLfNXZJ3xmnvRWMehNBnAKeRs1ioezSlPoLkZXOgOAn6MJLOtIcfgY1TFYlYXG9haxmlQYmnz1nlJAGmGZ7KQmbP6r+hUgVKlTTLaDWMqL+T+fIvBsQj3IKH81BhNgRX356RLmvIMPVKGzog6/OlE9OS1HsZ8mrIX6zzB8pUlgS4TWOjMW43iwNtHlRKfvF2LvLPVNSD1hZKmdZ4IdDbddn2FSBdSxrNjaHbRouAnUzB8ZQDzQZ6D8iqGagG0pyMTHzAWVmXHKRlBhDT25VcaOUJVwnjZ1dnIL1hij8KaDicghnTpCtoZ52drktrn8W881FjYTzDJmWE8gvHH6DJWnZZEyfKdSLNp5kRL/rdesBUJBKHZj1pG10mep9j/HazJQu40iVpji/PQ4/OGndZLeGX4Ce1blletWwuPd/Bcvkyeyjc0XEEBjATuI8FBNCYpcYfMBy40WvPjRcvMoD3Y92Ku8izj2HWnSNbH433nuwHis19MCGjsl9tT8cWaUl7oECDkz4YB87XIY9ELHTvDwpECNz08rh4pKxCNMVGXreScqJewWWwO+VrKqUXm/2LWjmKg=
+  on:
+    tags: true
+    repo: get-reformulate/reformulate
