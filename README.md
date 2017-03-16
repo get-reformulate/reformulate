@@ -33,8 +33,8 @@ export default {
 
 ```javascript
 import React, { Component } from 'react'
-import { Form, validate } from 'reformulate'
-import { Input, SubmitButton } from 'reformulate-semantic-ui'
+import { validate } from 'reformulate'
+import { Form, Input, SubmitButton } from 'reformulate-semantic-ui'
 
 export default class LoginComponent extends Component {
   render () {
