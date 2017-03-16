@@ -114,8 +114,6 @@ export default class FieldComponent extends Component {
     const { required } = this.props
     const error = this.getError()
 
-    console.log( 'render', this.getValue() )
-
     return (
       <input
         rel="field"

@@ -75,8 +75,6 @@ export class Form extends Component {
   setValue = async ( name, value, error ) => {
     const { props: { onChange, submitOnChange }, state: { values, errors } } = this
 
-    console.log( 'setting', name, value, error )
-
     const newState = {
       ...this.state,
       values: {
