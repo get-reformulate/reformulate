@@ -3,6 +3,7 @@ node_js:
 - 'node'
 
 cache: yarn
+before_install: npm i -g yarn
 install: yarn install
 script: yarn run build
 deploy:
