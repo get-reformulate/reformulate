@@ -1,8 +1,16 @@
-import React, { PropTypes, Component } from 'react'
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+
 import { injectIntl } from 'react-intl'
 import IntlError from 'intl-error'
+import get from 'lodash/get'
+import set from 'lodash/set'
+import unset from 'lodash/unset'
+import merge from 'lodash/merge'
+import isEqual from 'lodash/isEqual'
 
-export class Form extends Component {
+
+export class Form extends PureComponent {
 
   static propTypes = {
     intl: PropTypes.object,
@@ -14,13 +22,15 @@ export class Form extends Component {
     onSubmit: PropTypes.func,
     onChange: PropTypes.func,
     submitOnChange: PropTypes.bool.isRequired,
+    requiresParentRendering: PropTypes.bool.isRequired,
   }
 
   static defaultProps = {
     initialValues: {},
     // enforceInitialValues: false,
     loading: false,
-    submitOnChange: false
+    submitOnChange: false,
+    requiresParentRendering: false,
   }
 
   static childContextTypes = {
@@ -40,24 +50,29 @@ export class Form extends Component {
   }
 
   componentWillMount () {
-    this._handleInitialValues()
+    // we do not want to use setState here
+    this.state.initialValues = merge({},this.props.initialValues) // eslint-disable-line
+    this.state.values = merge({},this.props.initialValues) // eslint-disable-line
   }
 
-  componentWillUpdate () {
-    this._handleInitialValues()
+  componentDidUpdate ({ initialValues }) {
+    // check if the initialValues where updated. if yes we should force the update
+    // and change those
+    if ( ! isEqual(this.state.initialValues, initialValues) ) {
+      // TODO: we need to remove the equal parts from the values in order to prevent
+      // data sharing cross different data objects.
+
+      // we need to check whats been changed
+      this.setState({ initialValues })
+    }
   }
 
   componentWillUnmount () {
     this.mounted = false
   }
 
-  _handleInitialValues () {
-    // we do not want to use setState here
-    this.state.initialValues = this.props.initialValues
-  }
-
   getChildContext () {
-    const { registerComponent, setValue, getValue, getValues, getError, getFormattedError, hasErrors } = this
+    const { registerComponent, setValue, getValue, getValues, getError, getFormattedError, hasErrors, isDirty } = this
     const { initialValues, loading } = this.props
     const { values, previousValues, errors, submitting } = this.state
 
@@ -67,50 +82,104 @@ export class Form extends Component {
         values, previousValues, initialValues,
         errors, getValues, getValue, setValue,
         getError, hasErrors, getFormattedError,
-        submitting, loading
+        submitting, loading, isDirty
       }
     }
   }
 
-  setValue = async ( name, value, error ) => {
-    const { props: { onChange, submitOnChange }, state: { values, errors } } = this
+  onChange = async ( newState ) => {
+    const { props: { onChange, submitOnChange, requiresParentRendering } } = this
 
-    const newState = {
-      ...this.state,
-      values: {
-        ...values,
-        [name]: value
-      },
-      errors: {
-        ...errors,
-        [name]: error
-      }
+    if ( requiresParentRendering ) {
+      this.state = newState
+    } else {
+      await this.setState(newState)
     }
-
-    await this.setState(newState)
 
     if ( onChange ) {
       await onChange( newState )
     }
 
     if ( submitOnChange ) {
-      this.onSubmit()
+      await this.onSubmit()
     }
   }
 
+  unsetValue = async (name) => {
+    const { state } = this
+
+    const newState = {
+      ...state,
+      values: merge(state.values),
+    }
+
+    // set the value using the lodash setter (nested)
+    unset( newState.values, name )
+
+    await this.onChange(newState)
+  }
+
+  setValue = async ( name, value, error = null ) => {
+    const { state } = this
+
+    const newState = {
+      ...state,
+      values: merge(state.values),
+      errors: {
+        ...state.errors,
+        [name]: error,
+      },
+    }
+
+    // set the value using the lodash setter (nested)
+    set( newState.values, name, value )
+
+    await this.onChange(newState)
+  }
+
+  pushValue = async (name, value) => {
+    let parent = this.getValue(name)
+    if ( parent && ! Array.isArray(parent) ) {
+      throw new Error('parent is not an array')
+    }
+
+    if ( ! parent ) {
+      parent = []
+    }
+
+    // lets copy the parent
+    parent = [ ...parent ]
+
+    // push value into the array
+    parent.push( value )
+
+    // lets update the value
+    await this.setValue( name, parent )
+  }
+
+  spliceValue = async (name, index, count = 1) => {
+    let parent = this.getValue(name)
+    if ( parent && ! Array.isArray(parent) ) {
+      throw new Error('parent is not an array')
+    }
+
+    if ( ! parent ) {
+      parent = []
+    }
+
+    // lets copy the parent
+    parent = [ ...parent ]
+
+    // push value into the array
+    parent.splice( index, count )
+
+    // lets update the value
+    await this.setValue( name, parent )
+  }
+
   getValue = ( name ) => {
-    const { initialValues } = this.props
     const { values } = this.state
-
-    if ( typeof values[ name ] !== 'undefined' ) {
-      return values[ name ]
-    }
-
-    if ( typeof initialValues[ name ] !== 'undefined' ) {
-      return initialValues[ name ]
-    }
-
-    return undefined
+    return get( values, name ) || undefined
   }
 
   getValues = () => {
@@ -216,7 +285,7 @@ export class Form extends Component {
     const { values } = this.state
 
     await this.setState({
-      previousValues: { ...values },
+      previousValues: merge({}, values),
       submitting: true
     })
 
@@ -229,6 +298,10 @@ export class Form extends Component {
       await this.setState({ submitting: false })
     }
   }
+
+  isDirty = () => (
+    ! isEqual(this.state.values, this.state.initialValues)
+  )
 
   registerComponent = ( name, component ) => {
     const components = this.components = this.components || {}
