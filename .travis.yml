@@ -6,6 +6,7 @@ before_install: npm i -g yarn
 install: yarn install
 script: yarn run build
 deploy:
+  skip_cleanup: true
   provider: npm
   email: josemoreiravarzim@gmail.com
   api_key: $NPM_TOKEN
