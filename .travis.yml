@@ -8,8 +8,7 @@ script: yarn run build
 deploy:
   provider: npm
   email: josemoreiravarzim@gmail.com
-  api_key:
-    secure: KH71WrdfyyEg4a07Svo8faC5YEbOixDr2SllsfpcNvh1L1FEoosEmRv2FiFm2aUmKdmxnMmM44HuX/Z2csPPIXaDVQY1i0+fj7KRfpCC0kd1T7Kd/RIRmqw2v/Z9YY/aT3rVPyK55OA9wNvg52A4/yVfKlk+XnfMQOWx/joj9Wv9fZFeGvBUXEcrro3OCxtUcgxu05lynagGXVEwIWiQDcnCE/EuHG/W6WIDQA48UrwMg/GHsr65mD9ecKtD00X6MzLDth4lcbz23iFBPsoHUMCCCtzJilPNXzqZjay3b+IxWmi3Ht7k5QlQ07utGOZfBSFX131FaXVsbZ8nPEQAZd1wx2Biz56NFM8j5BajYBwkwnqFZnaZeD2dMMx8zEJh+5KRiVcn6MXkAbJUEglQmd1LH1vV0JHjMDiDQz2rwKguGgw9tpkwp/FQPQRsvTUdBQPqD2BbADSz8kRnXO0bTXW4H5VPZByETCkVaahIlfPtuTpzTLeWX6j7Dxvaan3ZGF/dgfiFwCyh6LwnJ7U2vGakvFX257LSQ5m4XnKXPGxoowo2koZSU5txBTWU+OWPhsAZCD8vV67p1Zzfe2oses6/YrQqaVKsd0EvrO4ot6jcM7/wghDc0RNYzPgNwTGeeOPfxy0nqzNm7UEMapqS5Z9cKE7jboedy1chNQ1quxk=
+  api_key: $NPM_TOKEN
   on:
     tags: true
     repo: get-reformulate/reformulate
