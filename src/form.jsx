@@ -111,10 +111,18 @@ export class Form extends PureComponent {
     const newState = {
       ...state,
       values: merge(state.values),
+      errors: {...state.errors},
     }
 
     // set the value using the lodash setter (nested)
     unset( newState.values, name )
+
+    // iterate over the errors in order to find exact or partial matches
+    for ( let key of Object.keys(newState.errors) ) {
+      if ( key === name || key.startsWith( name ) ) {
+        delete newState.errors[key]
+      }
+    }
 
     await this.onChange(newState)
   }
@@ -133,6 +141,15 @@ export class Form extends PureComponent {
 
     // set the value using the lodash setter (nested)
     set( newState.values, name, value )
+
+    // iterate over the errors in order to find exact or partial matches
+    if ( ! error ) {
+      for ( let key of Object.keys(newState.errors) ) {
+        if ( key === name || key.startsWith( name ) ) {
+          delete newState.errors[key]
+        }
+      }
+    }
 
     await this.onChange(newState)
   }
