@@ -72,13 +72,13 @@ export class Form extends PureComponent {
   }
 
   getChildContext () {
-    const { registerComponent, setValue, getValue, getValues, getError, getFormattedError, hasErrors, isDirty } = this
+    const { registerComponent, unregisterComponent, setValue, getValue, getValues, getError, getFormattedError, hasErrors, isDirty } = this
     const { initialValues, loading } = this.props
     const { values, previousValues, errors, submitting } = this.state
 
     return {
       form: {
-        registerComponent,
+        registerComponent, unregisterComponent,
         values, previousValues, initialValues,
         errors, getValues, getValue, setValue,
         getError, hasErrors, getFormattedError,
@@ -323,6 +323,11 @@ export class Form extends PureComponent {
   registerComponent = ( name, component ) => {
     const components = this.components = this.components || {}
     components[ name ] = component
+  }
+
+  unregisterComponent = ( name ) => {
+    const components = this.components = this.components || {}
+    delete components[ name ]
   }
 
 }

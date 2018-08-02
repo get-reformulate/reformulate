@@ -15,10 +15,17 @@ export default class FieldComponent extends Component {
     validate: PropTypes.func,
   }
 
-  constructor ( props, context, engine ) {
-    super( props, context, engine )
+  // constructor ( props, context, engine ) {
+  //   super( props, context, engine )
+  //   context.form.registerComponent( props.name, this )
+  // }
 
-    context.form.registerComponent( props.name, this )
+  componentWillMount () {
+    this.context.form.registerComponent( this.props.name, this )
+  }
+
+  componentWillUnmount () {
+    this.context.form.unregisterComponent( this.props.name, this )
   }
 
   validate = ( newValue ) => {
