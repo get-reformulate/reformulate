@@ -196,7 +196,7 @@ export class Form extends PureComponent {
 
   getValue = ( name ) => {
     const { values } = this.state
-    return get( values, name ) || undefined
+    return get( values, name )
   }
 
   getValues = () => {
